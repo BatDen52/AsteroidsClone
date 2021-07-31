@@ -8,31 +8,19 @@ public class SpawnerView : MonoBehaviour
     [SerializeField] private GameObject _asteroidTemplate;
     [SerializeField] private GameObject _fragmentTemplate;
     [SerializeField] private GameObject _ufoTemplate;
-    private Transform _transform;
 
     public event Action<DangerousObjectView> ViewCreated;
     public event Action<float> Tikc;
 
-    private void OnEnable()
-    {
-        _transform = transform;
-    }
+    public void CreateAsteroidView() => CreateDangerousObjectView(_asteroidTemplate);
 
-    public void CreateAsteroidView()
-    {
-        DangerousObjectView  view = Instantiate(_asteroidTemplate, _transform).GetComponent<DangerousObjectView>();
-        ViewCreated?.Invoke(view);
-    }
+    public void CreateFragmentView() => CreateDangerousObjectView(_fragmentTemplate);
 
-    public void CreateFragmentView()
-    {
-        DangerousObjectView  view = Instantiate(_fragmentTemplate, _transform).GetComponent<DangerousObjectView>();
-        ViewCreated?.Invoke(view);
-    }
+    public void CreateUfoView() => CreateDangerousObjectView(_ufoTemplate);
 
-    public void CreateUfoView()
+    private void CreateDangerousObjectView(GameObject template)
     {
-        DangerousObjectView  view = Instantiate(_ufoTemplate, _transform).GetComponent<DangerousObjectView>();
+        DangerousObjectView view = Instantiate(template, transform).GetComponent<DangerousObjectView>();
         ViewCreated?.Invoke(view);
     }
 

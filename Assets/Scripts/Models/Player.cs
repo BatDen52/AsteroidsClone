@@ -32,10 +32,12 @@ public class Player
         }
     }
     public Vector2 Direction => _direction;
-    private float Rotation
+    public Gun Gun { get; private set; }
+    public Laser Laser { get; private set; }
+    public float Rotation
     {
         get => _rotation;
-        set
+        private set
         {
             _rotation = value % 360;
 
@@ -62,6 +64,8 @@ public class Player
         _maxMoveSpeed = maxMoveSpeed;
         _acceleration = acceleration;
         _rotateSpeed = rotateSpeed;
+        Gun = new Gun(this);
+        Laser = new Laser();
     }
     public void Rotate(int direction, float deltaTime)
     {
@@ -87,5 +91,15 @@ public class Player
     {
         MoveSpeed -= _space.BrakingForce * deltaTime;
         SpeedChenged?.Invoke(MoveSpeed);
+    }
+
+    public void Shoot()
+    {
+        Gun.Shoot(_space);
+    }
+
+    public void ShootLaser()
+    {
+        Laser.Active();
     }
 }

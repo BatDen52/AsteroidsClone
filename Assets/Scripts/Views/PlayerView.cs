@@ -3,21 +3,47 @@ using UnityEngine;
 
 public class PlayerView : MonoBehaviour
 {
+    [SerializeField] private GameObject _bulletTemplate;
+
     private PlayerInput _playerInput;
 
     public event Action<int, float> Rotating;
     public event Action<float> Accelerating;
     public event Action<float> Moving;
+    public event Action<BulletView> BulletViewCreated;
+    public event Action Shooting;
+    public event Action ShootingLaser;
 
     private void OnEnable()
     {
         _playerInput = new PlayerInput();
         _playerInput.Enable();
+        _playerInput.Player.ShootGun.performed += ctx => ShootGun();
+        _playerInput.Player.ShootLaser.performed += ctx => ShootLaser();
     }
 
     private void OnDisable()
     {
+        _playerInput.Player.ShootGun.performed -= ctx => ShootGun();
+        _playerInput.Player.ShootLaser.performed -= ctx => ShootLaser();
         _playerInput.Disable();
+    }
+
+    public void CreateBulletView(float rotation)
+    {
+        BulletView view = Instantiate(_bulletTemplate, transform).GetComponent<BulletView>();
+        view.transform.eulerAngles = new Vector3(0, 0, rotation);
+        BulletViewCreated?.Invoke(view);
+    }
+
+    public void ShootGun()
+    {
+        Shooting?.Invoke();
+    }
+
+    public void ShootLaser()
+    {
+        ShootingLaser?.Invoke();
     }
 
     public void SetRotation(float rotation)

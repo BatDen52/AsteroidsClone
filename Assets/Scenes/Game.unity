@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42752afeae4c80c48bb4fe896859595a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _bulletTemplate: {fileID: 4945341013544906876, guid: 244e3d5e7bcd04048956ccad50191927, type: 3}
 --- !u!60 &411783294
 PolygonCollider2D:
   m_ObjectHideFlags: 0

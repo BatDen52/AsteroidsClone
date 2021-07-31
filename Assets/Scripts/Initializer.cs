@@ -6,6 +6,7 @@ public class Initializer : MonoBehaviour
     [SerializeField] private SpawnerView _spawnerView;
 
     private PlayerPresenter _playerPresenter;
+    private WeaponPresenter _weaponPresenter;
     private SpawnerPresenter _spawnerPresenter;
     private Player _playerModel;
     private Spawner _spawnerModel;
@@ -20,6 +21,8 @@ public class Initializer : MonoBehaviour
         _playerModel = new Player(space, 5, 3, 50);
         _playerPresenter = new PlayerPresenter(_playerView, _playerModel);
 
+        _weaponPresenter = new WeaponPresenter(_playerView, _playerModel);
+
         _spawnerModel = new Spawner(_playerModel,space, 1, 5);
         _spawnerPresenter = new SpawnerPresenter(_spawnerView, _spawnerModel);
     }
@@ -27,12 +30,14 @@ public class Initializer : MonoBehaviour
     private void OnEnable()
     {
         _playerPresenter.Enable();
+        _weaponPresenter.Enable();
         _spawnerPresenter.Enable();
     }
 
     private void OnDisable()
     {
         _playerPresenter.Disable();
+        _weaponPresenter.Disable();
         _spawnerPresenter.Disable();
     }
 }

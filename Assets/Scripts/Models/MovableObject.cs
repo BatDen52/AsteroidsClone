@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class DangerousObject
+public abstract class MovableObject 
 {
     private float _lostDistance;
     private float _moveSpeed;
@@ -13,7 +15,7 @@ public abstract class DangerousObject
     public event Action<Vector2> PositionChenged;
     public event Action Lost;
 
-    public DangerousObject(Player target, Vector2 position, Vector2 direction, float moveSpeed, float lostDistance)
+    public MovableObject(Player target, Vector2 position, Vector2 direction, float moveSpeed, float lostDistance)
     {
         Target = target;
         Position = position;

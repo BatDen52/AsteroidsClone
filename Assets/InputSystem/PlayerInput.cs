@@ -33,6 +33,22 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""ShootGun"",
+                    ""type"": ""Button"",
+                    ""id"": ""f41e4286-e460-430a-803a-9ead8b143721"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""ShootLaser"",
+                    ""type"": ""Button"",
+                    ""id"": ""5a43d153-940e-4faf-8ac7-ced5b9a8ef77"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -90,6 +106,28 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                     ""action"": ""Accelerate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a82a1fc0-005c-44ee-901b-afd34f8a18cf"",
+                    ""path"": ""<Keyboard>/j"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""ShootGun"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""886a1dce-c7a7-427b-8aa6-4910404d8d0a"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard"",
+                    ""action"": ""ShootLaser"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -112,6 +150,8 @@ public class @PlayerInput : IInputActionCollection, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Rotation = m_Player.FindAction("Rotation", throwIfNotFound: true);
         m_Player_Accelerate = m_Player.FindAction("Accelerate", throwIfNotFound: true);
+        m_Player_ShootGun = m_Player.FindAction("ShootGun", throwIfNotFound: true);
+        m_Player_ShootLaser = m_Player.FindAction("ShootLaser", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -163,12 +203,16 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     private IPlayerActions m_PlayerActionsCallbackInterface;
     private readonly InputAction m_Player_Rotation;
     private readonly InputAction m_Player_Accelerate;
+    private readonly InputAction m_Player_ShootGun;
+    private readonly InputAction m_Player_ShootLaser;
     public struct PlayerActions
     {
         private @PlayerInput m_Wrapper;
         public PlayerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Rotation => m_Wrapper.m_Player_Rotation;
         public InputAction @Accelerate => m_Wrapper.m_Player_Accelerate;
+        public InputAction @ShootGun => m_Wrapper.m_Player_ShootGun;
+        public InputAction @ShootLaser => m_Wrapper.m_Player_ShootLaser;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -184,6 +228,12 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Accelerate.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAccelerate;
                 @Accelerate.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAccelerate;
                 @Accelerate.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnAccelerate;
+                @ShootGun.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootGun;
+                @ShootGun.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootGun;
+                @ShootGun.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootGun;
+                @ShootLaser.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootLaser;
+                @ShootLaser.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootLaser;
+                @ShootLaser.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnShootLaser;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -194,6 +244,12 @@ public class @PlayerInput : IInputActionCollection, IDisposable
                 @Accelerate.started += instance.OnAccelerate;
                 @Accelerate.performed += instance.OnAccelerate;
                 @Accelerate.canceled += instance.OnAccelerate;
+                @ShootGun.started += instance.OnShootGun;
+                @ShootGun.performed += instance.OnShootGun;
+                @ShootGun.canceled += instance.OnShootGun;
+                @ShootLaser.started += instance.OnShootLaser;
+                @ShootLaser.performed += instance.OnShootLaser;
+                @ShootLaser.canceled += instance.OnShootLaser;
             }
         }
     }
@@ -211,5 +267,7 @@ public class @PlayerInput : IInputActionCollection, IDisposable
     {
         void OnRotation(InputAction.CallbackContext context);
         void OnAccelerate(InputAction.CallbackContext context);
+        void OnShootGun(InputAction.CallbackContext context);
+        void OnShootLaser(InputAction.CallbackContext context);
     }
 }
