@@ -6,7 +6,7 @@ public class Player
     private Vector2 _position;
     private float _rotation;
 
-    private Vector2 _forwardDirection;
+    private Vector2 _direction;
 
     private float _moveSpeed;
     private float _maxMoveSpeed;
@@ -15,10 +15,10 @@ public class Player
 
     private Space _space;
 
-    private Vector2 Position
+    public Vector2 Position
     {
         get => _position;
-        set
+        private set
         {
             _position = value;
             if (_position.y > _space.Top)
@@ -31,6 +31,7 @@ public class Player
                 _position.x = _space.Right;
         }
     }
+    public Vector2 Direction => _direction;
     private float Rotation
     {
         get => _rotation;
@@ -38,8 +39,8 @@ public class Player
         {
             _rotation = value % 360;
 
-            _forwardDirection.x = Mathf.Cos(Rotation * Mathf.PI / 180);
-            _forwardDirection.y = Mathf.Sin(Rotation * Mathf.PI / 180);
+            _direction.x = Mathf.Cos(Rotation * Mathf.PI / 180);
+            _direction.y = Mathf.Sin(Rotation * Mathf.PI / 180);
         }
     }
     private float MoveSpeed
@@ -69,15 +70,15 @@ public class Player
         RotationChenged?.Invoke(Rotation);
     }
 
-    public void Accelerate()
+    public void Accelerate(float deltaTime)
     {
-        MoveSpeed += _acceleration;
+        MoveSpeed += _acceleration * deltaTime;
         SpeedChenged?.Invoke(MoveSpeed);
     }
 
     public void Move(float deltaTime)
     {
-        Position += _forwardDirection * MoveSpeed * deltaTime;
+        Position += _direction * MoveSpeed * deltaTime;
         PositionChenged?.Invoke(Position);
         Brake(deltaTime);
     }

@@ -14,8 +14,8 @@ public class PlayerPresenter
     public void Enable()
     {
         _model.RotationChenged += OnRotationChenged;
-        _model.PositionChenged+= OnPositionChenged;
-        _model.SpeedChenged+= OnSpeedChenged;
+        _model.PositionChenged += OnPositionChenged;
+        _model.SpeedChenged += OnSpeedChenged;
 
         _view.Rotating += OnRotating;
         _view.Accelerating += OnAccelerating;
@@ -53,9 +53,9 @@ public class PlayerPresenter
         _model.Rotate(direction, deltaTime);
     }
 
-    private void OnAccelerating()
+    private void OnAccelerating(float deltaTime)
     {
-        _model.Accelerate();
+        _model.Accelerate(deltaTime);
     }
 
     private void OnMoving(float deltaTime)

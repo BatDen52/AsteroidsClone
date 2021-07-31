@@ -6,7 +6,7 @@ public class PlayerView : MonoBehaviour
     private PlayerInput _playerInput;
 
     public event Action<int, float> Rotating;
-    public event Action Accelerating;
+    public event Action<float> Accelerating;
     public event Action<float> Moving;
 
     private void OnEnable()
@@ -17,6 +17,7 @@ public class PlayerView : MonoBehaviour
 
     private void OnDisable()
     {
+        _playerInput.Disable();
     }
 
     public void SetRotation(float rotation)
@@ -37,7 +38,7 @@ public class PlayerView : MonoBehaviour
         if (direcion != 0)
             Rotating?.Invoke(direcion, Time.deltaTime);
         if (acceleration > 0)
-            Accelerating?.Invoke();
+            Accelerating?.Invoke(Time.deltaTime);
 
         Moving?.Invoke(Time.deltaTime);
     }
