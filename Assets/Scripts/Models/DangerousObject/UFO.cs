@@ -5,7 +5,7 @@ using UnityEngine;
 public class UFO : DangerousObject
 {
     public UFO(Player target, Vector2 position, Vector2 direction, float lostDistance) :
-        base(target, position, direction, 2, lostDistance) { }
+        base(target, position, direction, 2, lostDistance, 250) { }
 
     public override void Move(float deltaTime)
     {

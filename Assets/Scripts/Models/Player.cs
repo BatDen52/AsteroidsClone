@@ -54,9 +54,12 @@ public class Player
     public event Action<Vector2> PositionChenged;
     public event Action<float> RotationChenged;
     public event Action<float> SpeedChenged;
+    public event Action Died;
 
     public Player(Space space, float maxMoveSpeed, float acceleration, float rotateSpeed)
     {
+        Gun = new Gun(this);
+        Laser = new Laser(15, 3, 3);
         _space = space;
         Position = new Vector2(0, 0);
         Rotation = 0;
@@ -64,9 +67,8 @@ public class Player
         _maxMoveSpeed = maxMoveSpeed;
         _acceleration = acceleration;
         _rotateSpeed = rotateSpeed;
-        Gun = new Gun(this);
-        Laser = new Laser();
     }
+
     public void Rotate(int direction, float deltaTime)
     {
         Rotation += _rotateSpeed * direction * deltaTime;
@@ -100,6 +102,17 @@ public class Player
 
     public void ShootLaser()
     {
-        Laser.Active();
+        Laser.TryActive();
+    }
+
+    public void TakeReward(int reward)
+    {
+        Debug.Log("Reward " + reward);
+    }
+
+    public void Die()
+    {
+        Laser.Disable();
+        Died?.Invoke();
     }
 }

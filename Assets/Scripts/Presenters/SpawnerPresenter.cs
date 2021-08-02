@@ -7,7 +7,7 @@ public class SpawnerPresenter
     private SpawnerView _view;
     private Spawner _model;
     private DangerousObject _dangerousObjectModel;
-    private List<DangerousObjectPresenter> _asteriodPresenters;
+    private List<DangerousObjectPresenter> _dangerousObjectPresenters;
 
     public SpawnerPresenter(SpawnerView view, Spawner model)
     {
@@ -17,7 +17,7 @@ public class SpawnerPresenter
 
     public void Enable()
     {
-        _asteriodPresenters = new List<DangerousObjectPresenter>();
+        _dangerousObjectPresenters = new List<DangerousObjectPresenter>();
         _model.Enabled();
         _model.Spawned += OnSpawned;
         _view.ViewCreated += OnViewCreated;
@@ -31,8 +31,12 @@ public class SpawnerPresenter
         _view.ViewCreated -= OnViewCreated;
         _view.Tikc -= OnTick;
 
-        foreach (var presenter in _asteriodPresenters)
+        foreach (var presenter in _dangerousObjectPresenters)
         {
+            presenter.Lost -= OnLost;
+            presenter.Hiting -= OnHiting;
+            presenter.GameOver -= OnGameOver;
+            presenter.SplitAsteriod -= OnSplit;
             presenter.Disable();
         }
     }
@@ -48,11 +52,40 @@ public class SpawnerPresenter
             _view.CreateUfoView();
     }
 
-    private void OnViewCreated(DangerousObjectView asteroidView)
+    private void OnViewCreated(DangerousObjectView dangerousObjectView)
     {
-        DangerousObjectPresenter asteroidPresenter = new DangerousObjectPresenter(asteroidView, _dangerousObjectModel);
-        asteroidPresenter.Enable();
-        _asteriodPresenters.Add(asteroidPresenter);
+        DangerousObjectPresenter dangerousObjectPresenter = new DangerousObjectPresenter(dangerousObjectView, _dangerousObjectModel);
+        dangerousObjectPresenter.Lost += OnLost;
+        dangerousObjectPresenter.Hiting += OnHiting;
+        dangerousObjectPresenter.GameOver += OnGameOver;
+        dangerousObjectPresenter.SplitAsteriod += OnSplit;
+        dangerousObjectPresenter.Enable();
+        _dangerousObjectPresenters.Add(dangerousObjectPresenter);
+    }
+
+    private void OnLost(DangerousObjectPresenter dangerousObjectPresenter)
+    {
+        dangerousObjectPresenter.Lost -= OnLost;
+        _dangerousObjectPresenters.Remove(dangerousObjectPresenter);
+    }
+
+    private void OnHiting(DangerousObjectPresenter dangerousObjectPresenter)
+    {
+        dangerousObjectPresenter.Hiting -= OnHiting;
+        _dangerousObjectPresenters.Remove(dangerousObjectPresenter);
+    }
+
+    private void OnGameOver()
+    {
+        Disable();
+    }
+
+    private void OnSplit(DangerousObjectPresenter dangerousObjectPresenter)
+    {
+        dangerousObjectPresenter.SplitAsteriod -= OnSplit;
+        _dangerousObjectPresenters.Remove(dangerousObjectPresenter);
+
+        _model.Spawn(3, dangerousObjectPresenter.Position);
     }
 
     private void OnTick(float deltaTime)

@@ -8,12 +8,12 @@ public abstract class MovableObject
     private float _lostDistance;
     private float _moveSpeed;
 
+    public Vector2 Position { get; protected set; }
     protected Player Target { get; private set; }
     protected Vector2 Direction { get; set; }
-    protected Vector2 Position { get; set; }
 
     public event Action<Vector2> PositionChenged;
-    public event Action Lost;
+    public event Action<MovableObject> Lost;
 
     public MovableObject(Player target, Vector2 position, Vector2 direction, float moveSpeed, float lostDistance)
     {
@@ -32,7 +32,8 @@ public abstract class MovableObject
         float distanceToTarget = (float)Math.Sqrt(
             Math.Pow(Target.Position.x - Position.x, 2) +
             Math.Pow(Target.Position.y - Position.y, 2));
+
         if (distanceToTarget > _lostDistance)
-            Lost?.Invoke();
+            Lost?.Invoke(this);
     }
 }

@@ -18,7 +18,7 @@ public class Spawner
 
     public event Action<DangerousObject> Spawned;
 
-    public Spawner(Player player,Space space, int minDelay, int maxDelay)
+    public Spawner(Player player, Space space, int minDelay, int maxDelay)
     {
         _player = player;
         _space = space;
@@ -37,6 +37,18 @@ public class Spawner
 
     public void Disable()
     {
+    }
+
+    public void Spawn(int count, Vector2 position)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            Side side = (Side)_random.Next(Enum.GetValues(typeof(Side)).Length);
+            Vector2 direction = GetRandomDirection(side);
+            DangerousObject dangerousObject = new Fragment(_player, position, direction, _space.Diagonal);
+
+            Spawned?.Invoke(dangerousObject);
+        }
     }
 
     public void Spawn(float deltaTime)

@@ -4,6 +4,7 @@ using UnityEngine;
 public class PlayerView : MonoBehaviour
 {
     [SerializeField] private GameObject _bulletTemplate;
+    [SerializeField] private LaserView _laser;
 
     private PlayerInput _playerInput;
 
@@ -13,6 +14,7 @@ public class PlayerView : MonoBehaviour
     public event Action<BulletView> BulletViewCreated;
     public event Action Shooting;
     public event Action ShootingLaser;
+    public event Action<float> Tick;
 
     private void OnEnable()
     {
@@ -46,6 +48,16 @@ public class PlayerView : MonoBehaviour
         ShootingLaser?.Invoke();
     }
 
+    public void ActiveLaser()
+    {
+        _laser.gameObject.SetActive(true);
+    }
+
+    public void InactiveLaser()
+    {
+        _laser.gameObject.SetActive(false);
+    }
+
     public void SetRotation(float rotation)
     {
         transform.eulerAngles = new Vector3(0, 0, rotation);
@@ -67,5 +79,6 @@ public class PlayerView : MonoBehaviour
             Accelerating?.Invoke(Time.deltaTime);
 
         Moving?.Invoke(Time.deltaTime);
+        Tick?.Invoke(Time.deltaTime);
     }
 }
