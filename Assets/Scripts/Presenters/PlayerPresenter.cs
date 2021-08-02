@@ -20,6 +20,7 @@ public class PlayerPresenter
         _view.Rotating += OnRotating;
         _view.Accelerating += OnAccelerating;
         _view.Moving += OnMoving;
+        _view.Dying += OnDying;
     }
 
     public void Disable()
@@ -31,6 +32,13 @@ public class PlayerPresenter
         _view.Rotating -= OnRotating;
         _view.Accelerating -= OnAccelerating;
         _view.Moving -= OnMoving;
+        _view.Dying -= OnDying;
+    }
+
+    private void OnDying()
+    {
+        _model.Die();
+        Disable();
     }
 
     private void OnRotationChenged(float rotation)

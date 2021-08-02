@@ -4,12 +4,15 @@ public class Initializer : MonoBehaviour
 {
     [SerializeField] private PlayerView _playerView;
     [SerializeField] private SpawnerView _spawnerView;
+    [SerializeField] private UiView _uiView;
 
     private PlayerPresenter _playerPresenter;
     private WeaponPresenter _weaponPresenter;
     private SpawnerPresenter _spawnerPresenter;
+    private UiPresenter _uiPresenter;
     private Player _playerModel;
     private Spawner _spawnerModel;
+    private Score _scoreModel;
 
     private void Awake()
     {
@@ -25,6 +28,9 @@ public class Initializer : MonoBehaviour
 
         _spawnerModel = new Spawner(_playerModel,space, 1, 5);
         _spawnerPresenter = new SpawnerPresenter(_spawnerView, _spawnerModel);
+
+        _scoreModel = new Score();
+        _uiPresenter = new UiPresenter(_playerModel,_scoreModel,_uiView);
     }
 
     private void OnEnable()
@@ -32,6 +38,7 @@ public class Initializer : MonoBehaviour
         _playerPresenter.Enable();
         _weaponPresenter.Enable();
         _spawnerPresenter.Enable();
+        _uiPresenter.Enable();
     }
 
     private void OnDisable()
@@ -39,5 +46,6 @@ public class Initializer : MonoBehaviour
         _playerPresenter.Disable();
         _weaponPresenter.Disable();
         _spawnerPresenter.Disable();
+        _uiPresenter.Disable();
     }
 }

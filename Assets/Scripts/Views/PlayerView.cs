@@ -15,6 +15,7 @@ public class PlayerView : MonoBehaviour
     public event Action Shooting;
     public event Action ShootingLaser;
     public event Action<float> Tick;
+    public event Action Dying;
 
     private void OnEnable()
     {
@@ -29,6 +30,12 @@ public class PlayerView : MonoBehaviour
         _playerInput.Player.ShootGun.performed -= ctx => ShootGun();
         _playerInput.Player.ShootLaser.performed -= ctx => ShootLaser();
         _playerInput.Disable();
+    }
+
+    public void Die()
+    {
+        Dying?.Invoke();
+        Destroy(gameObject);
     }
 
     public void CreateBulletView(float rotation)

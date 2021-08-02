@@ -11,16 +11,17 @@ public class DangerousObjectView : MovableObjectView
     {
         if (collision.TryGetComponent(out BulletView bullet))
         {
-            Destroy(gameObject);
+            Destroy();
             HitDetected?.Invoke();
         }
         if (collision.TryGetComponent(out LaserView laser))
         {
-            Destroy(gameObject);
+            Destroy();
             LaserHitDetected?.Invoke();
         }
         if (collision.TryGetComponent(out PlayerView player))
         {
+            player.Die();
             GameOver?.Invoke();
         }
     }

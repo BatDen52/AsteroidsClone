@@ -41,6 +41,9 @@ public class DangerousObjectPresenter
         _view.HitDetected -= OnHitDetected;
         _view.LaserHitDetected -= OnLaserHitDetected;
         _view.GameOver -= OnGameOver;
+
+        if(_view?.gameObject)
+        _view?.Destroy();
     }
 
     private void OnPositionChenged(Vector2 position)
@@ -55,8 +58,8 @@ public class DangerousObjectPresenter
 
     private void OnLost(MovableObject movableObject)
     {
-        _view.Destroy();
         Lost?.Invoke(this);
+        _view.Destroy();
     }
 
     private void OnHitDetected()
@@ -80,7 +83,6 @@ public class DangerousObjectPresenter
 
     private void OnGameOver()
     {
-        _model.Die();
         GameOver?.Invoke();
     }
 }

@@ -55,6 +55,7 @@ public class Player
     public event Action<float> RotationChenged;
     public event Action<float> SpeedChenged;
     public event Action Died;
+    public event Action<int> RewardTaking;
 
     public Player(Space space, float maxMoveSpeed, float acceleration, float rotateSpeed)
     {
@@ -107,7 +108,7 @@ public class Player
 
     public void TakeReward(int reward)
     {
-        Debug.Log("Reward " + reward);
+        RewardTaking?.Invoke(reward);
     }
 
     public void Die()

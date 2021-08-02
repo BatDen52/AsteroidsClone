@@ -15,7 +15,8 @@ public class Laser
 
     public event Action Active;
     public event Action Inactive;
-    public event Action ChargeCountChanged;
+    public event Action<int> ChargeCountChanged;
+    public event Action<float> DelayChanged;
 
     public Laser(float cooldown, float workTime, int chargeCount)
     {
@@ -29,7 +30,7 @@ public class Laser
             charge.Ready += OnReady;
             _charges.Add(charge);
         }
-        ChargeCountChanged?.Invoke();
+        ChargeCountChanged?.Invoke(ChargeCount);
     }
 
     public void Disable()
@@ -46,13 +47,13 @@ public class Laser
             _charges.First(x => x.IsReady).Shoot();
             IsActive = true;
             Active?.Invoke();
-            ChargeCountChanged?.Invoke();
+            ChargeCountChanged?.Invoke(ChargeCount);
         }
     }
 
     public void OnReady()
     {
-        ChargeCountChanged?.Invoke();
+        ChargeCountChanged?.Invoke(ChargeCount);
     }
 
     public void Tick(float deltaTime)
@@ -70,5 +71,6 @@ public class Laser
         {
             charge.Tick(deltaTime);
         }
+        DelayChanged?.Invoke(_charges.Min(x=>x.Delay));
     }
 }
